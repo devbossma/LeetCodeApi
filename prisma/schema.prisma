@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// User model for authentication
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  email     String   @unique
+  password  String // Hashed password
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+// LeetCode Problem model
+model Problem {
+  id                 Int     @id @default(autoincrement())
+  frontendQuestionId String? @map("frontend_question_id")
+  title              String
+  titleSlug          String  @unique @map("title_slug")
+  difficulty         String // Easy, Medium, Hard
+  paidOnly           Boolean @default(false) @map("paid_only")
+
+  // URLs
+  url             String?
+  descriptionUrl  String? @map("description_url")
+  solutionUrl     String? @map("solution_url")
+  solutionCodeUrl String? @map("solution_code_url")
+
+  // Content (storing as TEXT)
+  description String? @db.Text
+  solution    String? @db.Text
+
+  // Code solutions
+  solutionCodePython String? @map("solution_code_python") @db.Text
+  solutionCodeJava   String? @map("solution_code_java") @db.Text
+  solutionCodeCpp    String? @map("solution_code_cpp") @db.Text
+
+  // Metadata
+  category       String?
+  acceptanceRate Float?   @map("acceptance_rate")
+  topics         String[] // Array of topics
+  hints          String[] // Array of hints
+
+  // Statistics
+  likes           Int?    @default(0)
+  dislikes        Int?    @default(0)
+  totalAccepted   String? @map("total_accepted")
+  totalSubmission String? @map("total_submission")
+
+  // Related problems (JSON)
+  similarQuestions Json? @map("similar_questions")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([difficulty])
+  @@index([titleSlug])
+  @@map("problems")
+}
