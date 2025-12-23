@@ -1,4 +1,4 @@
-import { Problem, Prisma } from '@prisma/client';
+import type { Problem, Prisma } from '../generated/prisma/client.js';
 import { prisma } from '../config/database';
 import { type ProblemFilters } from '../types/index.js';
 

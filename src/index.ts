@@ -5,21 +5,21 @@ import helmet from 'helmet';
 import { createYoga } from 'graphql-yoga';
 
 // Config
-import { testConnection } from './config/database.js';
-import { testRedisConnection } from './config/redis';
+import { testConnection } from '@config/database.js';
+import { testRedisConnection } from '@config/redis';
 
 // REST API Routes (v1)
 import apiV1Routes from './api/v1/routes/index';
 
 // GraphQL
-// import { schema } from './graphql/schema/index.js';
-// import { createGraphQLContext } from './graphql/context.js';
+import { schema } from './graphql/schema/index.js';
+import { createGraphQLContext } from './graphql/context.js';
 
 // Middleware
-// import { errorHandler } from './middleware/errorHandler.js';
+import { errorHandler } from '@middleware/errorHandler'
 
-// // Swagger
-// import { setupSwagger } from './config/swagger.js';
+// Swagger
+import { setupSwagger } from '@config/swagger'
 
 const app: Express = express();
 const PORT = process.env.APP_PORT || 3000;
@@ -54,32 +54,32 @@ app.use('/api/v1', apiV1Routes);
 // // ============================================
 // // GRAPHQL API
 // // ============================================
-// const yoga = createYoga({
-//     schema,
-//     context: createGraphQLContext,
-//     graphqlEndpoint: '/graphql',
-//     // Enable GraphiQL in development
-//     graphiql: process.env.NODE_ENV !== 'production',
-//     // Disable introspection in production
-//     maskedErrors: process.env.NODE_ENV === 'production',
-// });
+const yoga = createYoga({
+    schema,
+    context: createGraphQLContext,
+    graphqlEndpoint: '/graphql',
+    // Enable GraphiQL in development
+    graphiql: process.env.NODE_ENV !== 'production',
+    // Disable introspection in production
+    maskedErrors: process.env.NODE_ENV === 'production',
+});
 
-// app.use('/graphql', yoga);
+app.use('/graphql', yoga);
 
 // // ============================================
 // // SWAGGER DOCUMENTATION (REST API only)
 // // ============================================
-// setupSwagger(app);
+setupSwagger(app);
 
 // // ============================================
 // // ERROR HANDLING
 // // ============================================
-// app.use(errorHandler);
+app.use(errorHandler);
 
 // // ============================================
 // // 404 HANDLER
 // // ============================================
-app.use('*', (req, res) => {
+app.use('/{*any}', (req, res) => {
     res.status(404).json({
         success: false,
         error: 'Route not found',
@@ -91,28 +91,28 @@ app.use('*', (req, res) => {
 // // START SERVER
 // // ============================================
 async function startServer() {
-    //     try {
-    //         // Test database connection
-    //         await testConnection();
+    try {
+        // Test database connection
+        await testConnection();
 
-    //         // Test Redis connection
-    //         await testRedisConnection();
+        // Test Redis connection
+        await testRedisConnection();
 
-    //         app.listen(PORT, () => {
-    //             console.log('\n🚀 Server is running!');
-    //             console.log(`📍 Port: ${PORT}`);
-    //             console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-    //             console.log('\n📡 Available endpoints:');
-    //             console.log(`   REST API v1: http://localhost:${PORT}/api/v1`);
-    //             console.log(`   GraphQL:     http://localhost:${PORT}/graphql`);
-    //             console.log(`   Swagger:     http://localhost:${PORT}/api-docs`);
-    //             console.log(`   Health:      http://localhost:${PORT}/health`);
-    //             console.log('\n');
-    //         });
-    //     } catch (error) {
-    //         console.error('❌ Failed to start server:', error);
-    //         process.exit(1);
-    //     }
+        app.listen(PORT, () => {
+            console.log('\n🚀 Server is running!');
+            console.log(`📍 Port: ${PORT}`);
+            console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+            console.log('\n📡 Available endpoints:');
+            console.log(`   REST API v1: http://localhost:${PORT}/api/v1`);
+            console.log(`   GraphQL:     http://localhost:${PORT}/graphql`);
+            console.log(`   Swagger:     http://localhost:${PORT}/api-docs`);
+            console.log(`   Health:      http://localhost:${PORT}/health`);
+            console.log('\n');
+        });
+    } catch (error) {
+        console.error('❌ Failed to start server:', error);
+        process.exit(1);
+    }
 }
 
 startServer();

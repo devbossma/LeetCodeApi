@@ -1,4 +1,6 @@
-import { Problem } from '@prisma/client';
+// NOTE: Prisma Client is generated into `src/generated/prisma` (see prisma/schema.prisma).
+// Import model types from the generated client output rather than from `@prisma/client`.
+import type { Problem, Prisma } from '../generated/prisma/client.js';
 import { ProblemRepository } from '../repositories/problem.repository';
 import { cache } from '../config/redis.js';
 import { type ProblemFilters, type PaginatedResponse } from '../types/index';
@@ -77,7 +79,7 @@ export class ProblemService {
     /**
      * Create new problem (admin only)
      */
-    async createProblem(data: Partial<Problem>): Promise<Problem> {
+    async createProblem(data: Prisma.ProblemCreateInput): Promise<Problem> {
         const problem = await this.repository.create(data);
 
         // Invalidate list cache
@@ -89,7 +91,7 @@ export class ProblemService {
     /**
      * Update existing problem (admin only)
      */
-    async updateProblem(id: number, data: Partial<Problem>): Promise<Problem | null> {
+    async updateProblem(id: number, data: Prisma.ProblemUpdateInput): Promise<Problem | null> {
         const problem = await this.repository.update(id, data);
 
         if (problem) {

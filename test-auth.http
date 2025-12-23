@@ -1,0 +1,75 @@
+### Variables
+@baseUrl = http://localhost:3000/api
+@token = YOUR_JWT_TOKEN_HERE
+
+### 1. Register new user
+POST {{baseUrl}}/v1/auth/register
+Content-Type: application/json
+
+{
+  "username": "johndoe",
+  "email": "john@example.com",
+  "password": "password123"
+}
+
+### 2. Login
+POST {{baseUrl}}/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
+
+### 3. Get current user (requires token)
+GET {{baseUrl}}/v1/auth/me
+Authorization: Bearer {{token}}
+
+### 4. Change password (requires token)
+POST {{baseUrl}}/v1/auth/change-password
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "currentPassword": "password123",
+  "newPassword": "newpassword123"
+}
+
+### 5. Verify token
+POST {{baseUrl}}/v1/auth/verify
+Content-Type: application/json
+
+{
+  "token": "{{token}}"
+}
+
+### 6. Get problems (public - no auth needed)
+GET {{baseUrl}}/v1/problems?page=1&limit=20
+
+### 7. Create problem (requires auth)
+POST {{baseUrl}}/v1/problems
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Test Problem",
+  "titleSlug": "test-problem",
+  "difficulty": "Easy",
+  "description": "This is a test problem",
+  "topics": ["Array", "Hash Table"],
+  "hints": ["Think about using a hash map"]
+}
+
+### 8. Update problem (requires auth)
+PUT {{baseUrl}}/v1/problems/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Updated Test Problem",
+  "difficulty": "Medium"
+}
+
+### 9. Delete problem (requires auth)
+DELETE {{baseUrl}}/v1/problems/1
+Authorization: Bearer {{token}}
