@@ -13,8 +13,13 @@
     "prisma:studio": "prisma studio",
     "db:seed": "tsx src/utils/seedData.ts",
     "db:reset": "prisma migrate reset --force && npm run db:seed",
-    "lint": "eslint src/**/*.ts",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:restart": "docker-compose restart",
+    "docker:clean": "docker-compose down -v"
   },
   "keywords": [
     "leetcode",

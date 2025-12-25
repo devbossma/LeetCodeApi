@@ -1,47 +1,66 @@
-
-
 # Dependencies
 node_modules/
 package-lock.json
 yarn.lock
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Environment variables
 .env
 .env.local
 .env.production
+.env.*.local
 
 # Prisma
 prisma/migrations/
-/src/generated/prisma
+
+# Build outputs
+dist/
+build/
 
 # Logs
 logs/
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
 # OS files
 .DS_Store
 Thumbs.db
+*.swp
+*.swo
+*~
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
-
-# Build
-dist/
-build/
-data/
 
 # Testing
 coverage/
+.nyc_output/
 
 # Docker
+.dockerignore
+Dockerfile
+docker-compose*.yml
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+*.md
+docs/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Misc
 *.pid
 *.seed
 *.pid.lock
-/generated/prisma
