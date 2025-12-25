@@ -1,34 +1,34 @@
 import 'dotenv/config';
-import express, { type Express } from 'express';
+import express, { type Express, type Request, type Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { createYoga } from 'graphql-yoga';
 
 // Config
-import { testConnection } from '@config/database.js';
-import { testRedisConnection } from '@config/redis';
+import { testConnection } from './config/database.js';
+import { testRedisConnection } from './config/redis.js';
 
 // REST API Routes (v1)
-import apiV1Routes from './api/v1/routes/index';
+import apiV1Routes from './api/v1/routes/index.js';
 
 // GraphQL
 import { schema } from './graphql/schema/index.js';
 import { createGraphQLContext } from './graphql/context.js';
 
 // Middleware
-import { errorHandler } from '@middleware/errorHandler'
+import { errorHandler } from './middleware/errorHandler.js';
 
 // Swagger
-import { setupSwagger } from '@config/swagger'
+import { setupSwagger } from './config/swagger.js';
 
 const app: Express = express();
-const PORT = process.env.APP_PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 // ============================================
 // MIDDLEWARE
 // ============================================
 app.use(helmet({
-    contentSecurityPolicy: process.env.APP_NODE_ENV === 'production' ? undefined : false,
+    contentSecurityPolicy: process.env.APP_MODE === 'production' ? undefined : false,
     crossOriginEmbedderPolicy: false,
 }));
 app.use(cors());
@@ -51,9 +51,9 @@ app.get('/health', (req, res) => {
 // ============================================
 app.use('/api/v1', apiV1Routes);
 
-// // ============================================
-// // GRAPHQL API
-// // ============================================
+// ============================================
+// GRAPHQL API
+// ============================================
 const yoga = createYoga({
     schema,
     context: createGraphQLContext,
@@ -66,19 +66,19 @@ const yoga = createYoga({
 
 app.use('/graphql', yoga);
 
-// // ============================================
-// // SWAGGER DOCUMENTATION (REST API only)
-// // ============================================
+// ============================================
+// SWAGGER DOCUMENTATION (REST API only)
+// ============================================
 setupSwagger(app);
 
-// // ============================================
-// // ERROR HANDLING
-// // ============================================
+// ============================================
+// ERROR HANDLING
+// ============================================
 app.use(errorHandler);
 
-// // ============================================
-// // 404 HANDLER
-// // ============================================
+// ============================================
+// 404 HANDLER
+// ============================================
 app.use('/{*any}', (req, res) => {
     res.status(404).json({
         success: false,
@@ -87,9 +87,9 @@ app.use('/{*any}', (req, res) => {
     });
 });
 
-// // ============================================
-// // START SERVER
-// // ============================================
+// ============================================
+// START SERVER
+// ============================================
 async function startServer() {
     try {
         // Test database connection

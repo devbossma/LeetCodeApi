@@ -1,3 +1,5 @@
+import type { DateTimeFilter } from "@/generated/prisma/commonInputTypes";
+
 // API Response types
 export interface ApiResponse<T = any> {
     success: boolean;
@@ -51,6 +53,8 @@ export interface AuthResponse {
         id: number;
         username: string;
         email: string;
+        createdAt: Date
+        updatedAt: Date
     };
 }
 

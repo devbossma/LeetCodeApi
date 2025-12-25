@@ -60,6 +60,8 @@ export class AuthService {
                 id: user.id,
                 username: user.username,
                 email: user.email,
+                createdAt: user.createdAt,
+                updatedAt: user.updatedAt
             },
         };
     }
@@ -94,6 +96,8 @@ export class AuthService {
                 id: user.id,
                 username: user.username,
                 email: user.email,
+                createdAt: user.createdAt,
+                updatedAt: user.createdAt
             },
         };
     }

@@ -1,6 +1,7 @@
+
 export const userTypeDefs = `
   type User {
-    id: Int!
+    id: ID!
     username: String!
     email: String!
     createdAt: String!

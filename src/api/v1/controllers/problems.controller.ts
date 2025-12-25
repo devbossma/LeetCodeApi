@@ -110,10 +110,10 @@ export class ProblemController {
     /**
      * POST /api/v1/problems
      * Create new problem (admin only)
+     * Note: Validation is handled by middleware
      */
     createProblem = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            // TODO: Add validation
             const problem = await this.service.createProblem(req.body);
 
             res.status(201).json({

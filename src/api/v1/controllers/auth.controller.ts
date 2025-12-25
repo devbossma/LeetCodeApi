@@ -1,6 +1,6 @@
 import { type Request, type Response, type NextFunction } from 'express';
-import { AuthService } from '../../../services/auth.service.js';
-import { type RegisterInput, type LoginInput } from '../../../types/index.js';
+import { AuthService } from '../../../services/auth.service';
+import { type RegisterInput, type LoginInput } from '../../../types/index';
 
 export class AuthController {
     private authService: AuthService;
@@ -12,28 +12,11 @@ export class AuthController {
     /**
      * POST /api/v1/auth/register
      * Register new user
+     * Note: Validation is handled by middleware
      */
     register = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const input: RegisterInput = req.body;
-
-            // Validate input
-            if (!input.username || !input.email || !input.password) {
-                return res.status(400).json({
-                    success: false,
-                    error: 'Username, email, and password are required',
-                });
-            }
-
-            // Email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(input.email)) {
-                return res.status(400).json({
-                    success: false,
-                    error: 'Invalid email format',
-                });
-            }
-
             const result = await this.authService.register(input);
 
             res.status(201).json({
@@ -64,19 +47,11 @@ export class AuthController {
     /**
      * POST /api/v1/auth/login
      * Login user
+     * Note: Validation is handled by middleware
      */
     login = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const input: LoginInput = req.body;
-
-            // Validate input
-            if (!input.email || !input.password) {
-                return res.status(400).json({
-                    success: false,
-                    error: 'Email and password are required',
-                });
-            }
-
             const result = await this.authService.login(input);
 
             res.json({

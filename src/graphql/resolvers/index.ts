@@ -1,6 +1,8 @@
 import { GraphQLScalarType, Kind } from 'graphql';
-import { problemResolvers } from './problem.resolver';
-import { userResolvers } from './user.resolver';
+import { problemResolvers } from './problem.resolver.js';
+import { userResolvers } from './user.resolver.js';
+
+// Merge resolvers properly
 
 // Custom JSON scalar
 const JSONScalar = new GraphQLScalarType({
