@@ -53,7 +53,6 @@ services:
       - "${PORT:-3000}:3000"
     environment:
       NODE_ENV: ${APP_NODE:-production}
-      PORT: 3000
       DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-leetcode_api}?schema=public
       REDIS_HOST: redis
       REDIS_PORT: 6379
