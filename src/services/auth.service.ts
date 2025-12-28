@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { type User } from '../generated/prisma/client';
+import { type User } from '../generated/prisma/client.js';
 
-import { UserRepository } from '../repositories/user.repository';
+import { UserRepository } from '../repositories/user.repository.js';
 import { type RegisterInput, type LoginInput, type AuthResponse, type JWTPayload } from '../types/index.js';
 
 export class AuthService {

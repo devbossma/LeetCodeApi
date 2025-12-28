@@ -1,7 +1,7 @@
 # Multi-stage build for optimal image size
 
 # Stage 1: Build
-FROM node:18-alpine AS builder
+FROM node:24.12.0-alpine AS builder
 
 # Set working directory
 WORKDIR /app
@@ -16,7 +16,7 @@ RUN npm ci
 
 # Copy source code
 COPY src ./src
-COPY lib ./lib
+COPY prisma.config.ts ./prisma.config.ts
 
 # Generate Prisma Client
 RUN npx prisma generate
@@ -24,8 +24,10 @@ RUN npx prisma generate
 # Build TypeScript
 RUN npm run build
 
+CMD ["npm", "run", "db:seed"]
+
 # Stage 2: Production
-FROM node:18-alpine AS production
+FROM node:24.12.0-alpine AS  production
 
 # Install dumb-init for proper signal handling
 RUN apk add --no-cache dumb-init
@@ -40,23 +42,26 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install only production dependencies
-RUN npm ci --only=production && npm cache clean --force
-
-# Copy Prisma schema and generate client
+# Copy Prisma schema (needed for postinstall)
 COPY prisma ./prisma/
-RUN npx prisma generate
+COPY prisma.config.ts ./prisma.config.ts
+
+# Install dependencies (postinstall will run prisma generate)
+RUN npm ci --only=production && npm cache clean --force
 
 # Copy built application from builder
 COPY --from=builder /app/dist ./dist
+# Copy source files for Swagger documentation (JSDoc comments)
+COPY --from=builder /app/src ./src
 
-# Copy seed data
+# Copy seed script and data
+# COPY scripts ./scripts
 COPY data ./data
 
-# Changing the ownership to the created nodejs user
+# Change ownership to nodejs user
 RUN chown -R nodejs:nodejs /app
 
-# Switching to nodejs user
+# Switch to nodejs user
 USER nodejs
 
 # Expose port

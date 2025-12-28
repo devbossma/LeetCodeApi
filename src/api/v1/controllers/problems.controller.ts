@@ -1,6 +1,6 @@
 import { type Request, type Response, type NextFunction } from 'express';
-import { ProblemService } from '../../../services/problem.service';
-import { type ProblemFilters } from '../../../types/index';
+import { ProblemService } from '../../../services/problem.service.js';
+import { type ProblemFilters } from '../../../types/index.js';
 
 export class ProblemController {
     private service: ProblemService;

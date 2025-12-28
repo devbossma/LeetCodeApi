@@ -12,6 +12,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "db:seed": "tsx src/utils/seedData.ts",
+    "db:seed:prod": "node scripts/seed-database.cjs",
     "db:reset": "prisma migrate reset --force && npm run db:seed",
     "type-check": "tsc --noEmit",
     "docker:build": "docker-compose build",
@@ -19,7 +20,9 @@
     "docker:down": "docker-compose down",
     "docker:logs": "docker-compose logs -f",
     "docker:restart": "docker-compose restart",
-    "docker:clean": "docker-compose down -v"
+    "docker:clean": "docker-compose down -v",
+    "docker:seed": "docker-compose --profile seed run --rm seed",
+    "docker:seed:force": "FORCE_SEED=true docker-compose --profile seed run --rm seed"
   },
   "keywords": [
     "leetcode",
@@ -54,6 +57,7 @@
     "@prisma/client": "^7.2.0",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
+    "prisma": "^7.2.0",
     "dataloader": "^2.2.3",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",

@@ -1,5 +1,5 @@
 import type { Problem, Prisma } from '../generated/prisma/client.js';
-import { prisma } from '../config/database';
+import { prisma } from '../config/database.js';
 import { type ProblemFilters } from '../types/index.js';
 
 export class ProblemRepository {

@@ -1,9 +1,9 @@
 // NOTE: Prisma Client is generated into `src/generated/prisma` (see prisma/schema.prisma).
 // Import model types from the generated client output rather than from `@prisma/client`.
 import type { Problem, Prisma } from '../generated/prisma/client.js';
-import { ProblemRepository } from '../repositories/problem.repository';
+import { ProblemRepository } from '../repositories/problem.repository.js';
 import { cache } from '../config/redis.js';
-import { type ProblemFilters, type PaginatedResponse } from '../types/index';
+import { type ProblemFilters, type PaginatedResponse } from '../types/index.js';
 
 export class ProblemService {
     private repository: ProblemRepository;

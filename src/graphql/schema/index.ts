@@ -1,7 +1,7 @@
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import { problemTypeDefs } from './problem.schema';
-import { userTypeDefs } from './user.schema';
-import { resolvers } from '../resolvers/index';
+import { problemTypeDefs } from './problem.schema.js';
+import { userTypeDefs } from './user.schema.js';
+import { resolvers } from '../resolvers/index.js';
 
 // Root schema
 const rootTypeDefs = `

@@ -11,18 +11,16 @@ const options: swaggerJsdoc.Options = {
             description: 'RESTful API for browsing and managing LeetCode problems with authentication and caching',
             contact: {
                 name: 'API Support',
-                email: 'ysaber201@gmail.com',
+                email: 'usaber201@outlook.com',
             },
         },
         servers: [
             {
-                // Development host url
-                url: `http://${process.env.APP_HOST || 'localhost'}:${process.env.APP_PORT || 3000}`,
+                url: `http://localhost:${process.env.APP_PORT || 3000}`,
                 description: 'Development server',
             },
             {
-                // Production host url
-                url: `http://${process.env.APP_HOST || 'localhost'}`,
+                url: `${process.env.PROD_APP_HOST}`,
                 description: 'Production server',
             },
         ],
@@ -62,7 +60,10 @@ const options: swaggerJsdoc.Options = {
             { name: 'Auth', description: 'Authentication endpoints' },
         ],
     },
-    apis: ['./src/api/v1/routes/*.ts'], // Path to route files
+    // Use different paths for development vs production
+    apis: process.env.APP_MODE === 'production'
+        ? ['./dist/api/v1/routes/*.js']
+        : ['./src/api/v1/routes/*.ts'],
 };
 
 const specs = swaggerJsdoc(options);

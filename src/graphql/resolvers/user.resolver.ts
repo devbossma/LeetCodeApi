@@ -1,7 +1,7 @@
 import { GraphQLError } from 'graphql';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth.service.js';
 import { type GraphQLContext } from '../context.js';
-import { type RegisterInput, type LoginInput } from '../../types/index';
+import { type RegisterInput, type LoginInput } from '../../types/index.js';
 
 const authService = new AuthService();
 

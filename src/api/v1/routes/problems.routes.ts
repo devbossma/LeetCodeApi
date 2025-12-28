@@ -1,14 +1,14 @@
 import { Router } from 'express';
-import { ProblemController } from '../controllers/problems.controller';
-import { authenticate } from '../../../middleware/auth.middleware';
-import { validate, validateMultiple } from '../../../middleware/validation.middleware';
+import { ProblemController } from '../controllers/problems.controller.js';
+import { authenticate } from '../../../middleware/auth.middleware.js';
+import { validate, validateMultiple } from '../../../middleware/validation.middleware.js';
 import {
     createProblemSchema,
     updateProblemSchema,
     problemQuerySchema,
     searchQuerySchema,
     idParamSchema,
-} from '../validators/problems.validator';
+} from '../validators/problems.validator.js';
 
 const router = Router();
 const controller = new ProblemController();

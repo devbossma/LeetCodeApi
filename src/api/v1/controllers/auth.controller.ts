@@ -1,6 +1,6 @@
 import { type Request, type Response, type NextFunction } from 'express';
-import { AuthService } from '../../../services/auth.service';
-import { type RegisterInput, type LoginInput } from '../../../types/index';
+import { AuthService } from '../../../services/auth.service.js';
+import { type RegisterInput, type LoginInput } from '../../../types/index.js';
 
 export class AuthController {
     private authService: AuthService;

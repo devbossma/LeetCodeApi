@@ -1,6 +1,6 @@
 import { GraphQLError } from 'graphql';
-import { ProblemService } from '../../services/problem.service';
-import { type GraphQLContext } from '../context';
+import { ProblemService } from '../../services/problem.service.js';
+import { type GraphQLContext } from '../context.js';
 
 const problemService = new ProblemService();
 
