@@ -22,7 +22,7 @@ import { errorHandler } from './src/middleware/errorHandler';
 import { setupSwagger } from './src/config/swagger.js';
 
 const app: Express = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.APP_PORT || 3000;
 
 // ============================================
 // MIDDLEWARE
@@ -101,7 +101,7 @@ async function startServer() {
         app.listen(PORT, () => {
             console.log('\n🚀 Server is running!');
             console.log(`📍 Port: ${PORT}`);
-            console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+            console.log(`🌍 Environment: ${process.env.APP_MODE || 'development'}`);
             console.log('\n📡 Available endpoints:');
             console.log(`   REST API v1: http://localhost:${PORT}/api/v1`);
             console.log(`   GraphQL:     http://localhost:${PORT}/graphql`);

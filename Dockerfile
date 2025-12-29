@@ -16,6 +16,7 @@ RUN npm ci
 
 # Copy source code
 COPY src ./src
+COPY .env ./.env
 COPY prisma.config.ts ./prisma.config.ts
 
 # Generate Prisma Client

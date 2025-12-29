@@ -5,6 +5,7 @@ services:
   postgres:
     image: postgres:15-alpine
     container_name: leetcode_api_postgres
+    env_file: .env
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
@@ -28,6 +29,7 @@ services:
     image: redis:7-alpine
     container_name: leetcode_api_redis
     restart: unless-stopped
+    env_file: .env
     command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-}
     ports:
       - "${REDIS_PORT:-6379}:6379"
@@ -48,11 +50,12 @@ services:
       dockerfile: Dockerfile
       target: production
     container_name: leetcode_api
+    env_file: .env
     restart: unless-stopped
     ports:
-      - "${PORT:-3000}:3000"
+      - "${APP_PORT:-3000}:3000"
     environment:
-      NODE_ENV: ${APP_NODE:-production}
+      NODE_ENV: ${APP_MODE:-production}
       DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-leetcode_api}?schema=public
       REDIS_HOST: redis
       REDIS_PORT: 6379
@@ -74,6 +77,7 @@ services:
   nginx:
     image: nginx:alpine
     container_name: leetcode_api_nginx
+    env_file: .env
     restart: always
     ports:
       - "80:80" # HTTP
