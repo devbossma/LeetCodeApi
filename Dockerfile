@@ -16,7 +16,6 @@ RUN npm ci
 
 # Copy source code
 COPY src ./src
-COPY .env ./.env
 COPY prisma.config.ts ./prisma.config.ts
 
 # Generate Prisma Client
@@ -25,10 +24,13 @@ RUN npx prisma generate
 # Build TypeScript
 RUN npm run build
 
-CMD ["npm", "run", "db:seed"]
+# List generated files for debugging
+RUN find /app -name ".prisma" -type d 2>/dev/null || true
+RUN find /app -name "@prisma" -type d 2>/dev/null || true
+
 
 # Stage 2: Production
-FROM node:24.12.0-alpine AS  production
+FROM node:24.12.0-alpine AS production
 
 # Install dumb-init for proper signal handling
 RUN apk add --no-cache dumb-init
@@ -40,24 +42,31 @@ RUN addgroup -g 1001 -S nodejs && \
 # Set working directory
 WORKDIR /app
 
+# Set environment variables
+ENV NODE_ENV=production
+
 # Copy package files
 COPY package*.json ./
 
-# Copy Prisma schema (needed for postinstall)
+# Copy Prisma schema
 COPY prisma ./prisma/
 COPY prisma.config.ts ./prisma.config.ts
 
-# Install dependencies (postinstall will run prisma generate)
+# Install production dependencies
 RUN npm ci --only=production && npm cache clean --force
 
 # Copy built application from builder
 COPY --from=builder /app/dist ./dist
-# Copy source files for Swagger documentation (JSDoc comments)
-COPY --from=builder /app/src ./src
 
-# Copy seed script and data
-# COPY scripts ./scripts
+# Copy generated files from builder (including Prisma client if it's in dist)
+# This assumes your build process includes the generated Prisma client
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+
+# Copy seed data
 COPY data ./data
+
+# Create logs directory and set permissions
+RUN mkdir -p /app/logs
 
 # Change ownership to nodejs user
 RUN chown -R nodejs:nodejs /app

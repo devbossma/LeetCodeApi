@@ -6,7 +6,7 @@ services:
     image: postgres:15-alpine
     container_name: leetcode_api_postgres
     env_file: .env
-    restart: unless-stopped
+    restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
@@ -28,7 +28,7 @@ services:
   redis:
     image: redis:7-alpine
     container_name: leetcode_api_redis
-    restart: unless-stopped
+    restart: always
     env_file: .env
     command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-}
     ports:
@@ -56,7 +56,7 @@ services:
       - "${APP_PORT:-3000}:3000"
     environment:
       NODE_ENV: ${APP_MODE:-production}
-      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-leetcode_api}?schema=public
+      DATABASE_URL: ${DOCKER_DATABASE_URL}
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: ${REDIS_PASSWORD:-}

@@ -21,25 +21,25 @@
                 "./*"
             ],
             "@config/*": [
-                "./config/*"
+                "./src/config/*"
             ],
             "@models/*": [
-                "./models/*"
+                "./src/generated/models/*"
             ],
             "@controllers/*": [
-                "./controllers/*"
+                "./src/api/v1/controllers/*"
             ],
             "@routes/*": [
-                "./routes/*"
+                "./src/api/v1/routes/*"
             ],
             "@middleware/*": [
-                "./middleware/*"
+                "./src/middleware/*"
             ],
             "@utils/*": [
-                "./utils/*"
+                "./src/utils/*"
             ],
             "@lib/*": [
-                "./lib/*"
+                "./src/lib/*"
             ]
         },
         "types": [
