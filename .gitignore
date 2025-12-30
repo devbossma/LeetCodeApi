@@ -6,7 +6,6 @@ tree.md
 .env
 
 # Prisma
-prisma/migrations/
 src/generated/
 generated/
 

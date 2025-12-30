@@ -62,6 +62,9 @@ COPY --from=builder /app/dist ./dist
 # This assumes your build process includes the generated Prisma client
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
+# Copy the migration history from the project root
+COPY prisma/migrations ./prisma/migrations
+
 # Copy seed data
 COPY data ./data
 
