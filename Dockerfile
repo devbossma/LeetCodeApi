@@ -63,7 +63,7 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
 # Copy the migration history from the project root
-COPY prisma/migrations ./prisma/migrations
+COPY --from=builder /app/prisma/* ./prisma
 
 # Copy seed data
 COPY data ./data
