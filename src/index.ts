@@ -1,5 +1,6 @@
 import 'dotenv/config';
-import express, { type Express, type Request, type Response } from 'express';
+import type { Express, Request, Response } from 'express';
+import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { createYoga } from 'graphql-yoga';
@@ -30,6 +31,8 @@ const PORT = process.env.PORT || 3000;
 app.use(helmet({
     contentSecurityPolicy: process.env.APP_MODE === 'production' ? undefined : false,
     crossOriginEmbedderPolicy: false,
+    crossOriginOpenerPolicy: false, // Disable COOP for Swagger compatibility
+    crossOriginResourcePolicy: false,
 }));
 app.use(cors());
 app.use(express.json());
@@ -58,10 +61,10 @@ const yoga = createYoga({
     schema,
     context: createGraphQLContext,
     graphqlEndpoint: '/graphql',
-    // Enable GraphiQL in development
-    graphiql: process.env.NODE_ENV !== 'production',
+    // Enable GraphiQL in development and production for testing
+    graphiql: true,
     // Disable introspection in production
-    maskedErrors: process.env.NODE_ENV === 'production',
+    maskedErrors: process.env.APP_MODE === 'production',
 });
 
 app.use('/graphql', yoga);
@@ -101,7 +104,7 @@ async function startServer() {
         app.listen(PORT, () => {
             console.log('\n🚀 Server is running!');
             console.log(`📍 Port: ${PORT}`);
-            console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+            console.log(`🌍 Environment: ${process.env.APP_MODE || 'development'}`);
             console.log('\n📡 Available endpoints:');
             console.log(`   REST API v1: http://localhost:${PORT}/api/v1`);
             console.log(`   GraphQL:     http://localhost:${PORT}/graphql`);
