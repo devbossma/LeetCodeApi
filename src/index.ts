@@ -28,11 +28,13 @@ const PORT = process.env.PORT || 3000;
 // ============================================
 // MIDDLEWARE
 // ============================================
+// Configure helmet with relaxed settings for HTTP
 app.use(helmet({
-    contentSecurityPolicy: process.env.APP_MODE === 'production' ? undefined : false,
+    contentSecurityPolicy: false, // Disable CSP for Swagger
     crossOriginEmbedderPolicy: false,
-    crossOriginOpenerPolicy: false, // Disable COOP for Swagger compatibility
+    crossOriginOpenerPolicy: false,
     crossOriginResourcePolicy: false,
+    originAgentCluster: false, // Disable Origin-Agent-Cluster header
 }));
 app.use(cors());
 app.use(express.json());
@@ -63,8 +65,8 @@ const yoga = createYoga({
     graphqlEndpoint: '/graphql',
     // Enable GraphiQL in development and production for testing
     graphiql: true,
-    // Disable introspection in production
-    maskedErrors: process.env.APP_MODE === 'production',
+    // Disable introspection in production (optional)
+    // maskedErrors: process.env.NODE_ENV === 'production',
 });
 
 app.use('/graphql', yoga);
@@ -104,7 +106,7 @@ async function startServer() {
         app.listen(PORT, () => {
             console.log('\n🚀 Server is running!');
             console.log(`📍 Port: ${PORT}`);
-            console.log(`🌍 Environment: ${process.env.APP_MODE || 'development'}`);
+            console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
             console.log('\n📡 Available endpoints:');
             console.log(`   REST API v1: http://localhost:${PORT}/api/v1`);
             console.log(`   GraphQL:     http://localhost:${PORT}/graphql`);
