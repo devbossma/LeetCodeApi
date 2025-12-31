@@ -67,7 +67,6 @@ app_logs/
 certbot/
 
 # Backup files
-*.sql
 *.sql.gz
 backup_*.sql
 *.dump

@@ -11,15 +11,17 @@ const options: swaggerJsdoc.Options = {
             description: 'RESTful API for browsing and managing LeetCode problems with authentication and caching',
             contact: {
                 name: 'API Support',
-                email: 'support@example.com',
+                email: 'ysaber201@outlook.com',
             },
         },
         servers: [
             {
-                url: process.env.APP_MODE === 'production'
-                    ? `http://${process.env.PROD_APP_HOST || 'localhost'}`
-                    : `http://localhost:${process.env.PORT || 3000}`,
-                description: process.env.APP_MODE === 'production' ? 'Production server' : 'Development server',
+                url: `${process.env.PROD_APP_HOST}`,
+                description: 'Production server',
+            },
+            {
+                url: 'http://localhost:3000',
+                description: 'Development server',
             },
         ],
         components: {
@@ -76,18 +78,8 @@ export function setupSwagger(app: Express): void {
         swaggerUi.setup(specs, {
             customCss: '.swagger-ui .topbar { display: none }',
             customSiteTitle: 'LeetCode API Docs',
-            swaggerOptions: {
-                url: '/api-docs/swagger.json',
-                // Force HTTP protocol (don't auto-detect)
-                supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
-            },
         })
     );
-
-    // Serve swagger spec as JSON
-    app.get('/api-docs/swagger.json', (req, res) => {
-        res.json(specs);
-    });
 
     console.log('📚 Swagger docs available at /api-docs');
 }
