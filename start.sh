@@ -33,13 +33,13 @@ if [ ! -f .env ]; then
     echo "Creating .env from template..."
     
     if [ -f .env.docker ]; then
-        cp .env.docker .env
+        cp .env.example .env
         echo -e "${GREEN}✅ Created .env file${NC}"
         echo -e "${YELLOW}⚠️  IMPORTANT: Edit .env and update passwords!${NC}"
         echo ""
         read -p "Press Enter to continue..."
     else
-        echo -e "${RED}❌ .env.docker template not found${NC}"
+        echo -e "${RED}❌ .env.example template not found${NC}"
         exit 1
     fi
 else
